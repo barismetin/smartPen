@@ -21,6 +21,25 @@ RESIZED_IMAGE_WIDTH = 20
 RESIZED_IMAGE_HEIGHT = 30
 
 ###################################################################################################
+
+camera_port = 0
+ramp_frames = 30
+
+camera = cv2.VideoCapture(camera_port)
+
+
+def get_image():
+    retval, im = camera.read()
+    return im
+    for i in xrange(ramp_frames):
+        temp = get_image()
+
+print("Resim aliniyor")
+camera_capture = get_image()
+file = "test1.png"
+cv2.imwrite(file, camera_capture)
+del(camera)
+
 class ContourWithData():
 
     # member variables ############################################################################
@@ -34,22 +53,23 @@ class ContourWithData():
 
     def calculateRectTopLeftPointAndWidthAndHeight(self):               # calculate bounding rect info
         [intX, intY, intWidth, intHeight] = self.boundingRect
-        self.intRectX = intX
+         self.intRectX = intX
         self.intRectY = intY
-        self.intRectWidth = intWidth
-        self.intRectHeight = intHeight
+            self.intRectWidth = intWidth
+            self.intRectHeight = intHeight
 
-    def checkIfContourIsValid(self):                            # this is oversimplified, for a production grade program
-        if self.fltArea < MIN_CONTOUR_AREA: return False        # much better validity checking would be necessary
-        return True
+        def checkIfContourIsValid(self):                            # this is oversimplified, for a production grade program
+            if self.fltArea < MIN_CONTOUR_AREA: return False        # much better validity checking would be necessary
+            return True
 
 ###################################################################################################
-def main():
-    allContoursWithData = []                # declare empty lists,
-    validContoursWithData = []              # we will fill these shortly
 
-    try:
-        npaClassifications = np.loadtxt("classifications.txt", np.float32)                  # read in training classifications
+    def main():
+        allContoursWithData = []                # declare empty lists,
+        validContoursWithData = []              # we will fill these shortly
+
+        try:
+         npaClassifications = np.loadtxt("classifications.txt", np.float32)                  # read in training classifications
     except:
         print "error, unable to open classifications.txt, exiting program\n"
         os.system("pause")
@@ -136,7 +156,6 @@ def main():
         strCurrentChar = str(chr(int(npaResults[0][0])))                                             # get character from results
 
         strFinalString = strFinalString + strCurrentChar            # append current char to full string
-    # end for
 
     print "\n" + strFinalString + "\n"                  # show the full string
 
@@ -146,10 +165,11 @@ def main():
     cv2.destroyAllWindows()             # remove windows from memory
     sentData(strFinalString)
     return
+
 def sentData(data):
     cmd = data
         # for Python 2
-    # cmd = input("Enter command or 'exit':")
+    # cm    d = input("Enter command or 'exit':")
         # for Python 3
     if cmd == 'exit':
         ser.close()
@@ -158,8 +178,8 @@ def sentData(data):
         ser.write(cmd.encode('ascii')+'\r\n')
         out = ser.read()
         print('Receiving...'+out)
-
     return
+
 
 
 ###################################################################################################
